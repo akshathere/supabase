@@ -35,6 +35,7 @@ export default function Userform(){
           ref={formRef}
           className="flex gap-4"
           action={async (data) => {
+            console.log(data)
             await addUser(data);
             formRef.current?.reset();
           }}

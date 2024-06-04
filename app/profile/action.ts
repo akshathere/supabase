@@ -9,7 +9,9 @@ import { getURL } from '@/utils/helpers'
 
 export async function addUser(formData : FormData){
     const supabase=createClient();
-    const text=formData.get('user') as string | null
+    console.log(formData)
+    const text=formData.get('bio') as string
+    console.log(text)
     if(!text){
         throw new Error("text is required")
     }
@@ -19,14 +21,17 @@ export async function addUser(formData : FormData){
     if(!user){
         throw new Error("user not logged in")
     }
+    console.log(user.id)
     const { data, error } = await (await supabase).from('users')
         .insert({
             bio: text,
         user_id: user.id,
-        name:"a"
+        name:"Aksj",
+        email:user.email,
+        role:"manager"
         });
     if (error) {
-        throw new Error("Error adding task")
+        console.error(error)
     }
 
     revalidatePath("/profile")
