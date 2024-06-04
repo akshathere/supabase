@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Provider } from "@supabase/supabase-js";
-import { Github } from "lucide-react";
+import { Github, GithubIcon } from "lucide-react";
 import { oAuthSignIn } from "./actions";
 
 type OAuthProvider = {
@@ -14,8 +14,9 @@ export function OAuthButtons() {
   
   const oAuthProviders: OAuthProvider[] = [
     {
-      name: "google",
-      displayName: "Google",
+      name: "github",
+      displayName: "Github",
+      icon: <Github className="size-5"></Github>
     },
   ];
 
