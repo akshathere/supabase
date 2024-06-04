@@ -6,10 +6,7 @@ import { useState } from 'react';
 import { addUser } from '../profile/action';
 import Userform from '@/components/userform';
 
-const UserForm = ({ onSubmit }:{onSubmit :any}) => {
-
-  
-
+const UserForm = () => {
   return <Userform></Userform>
 };
 
