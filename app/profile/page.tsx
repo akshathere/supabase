@@ -1,4 +1,4 @@
-"use client"
+
 // import { TodoList } from "@/components/todo-list";
 import { Separator } from "@/components/ui/separator";
 import Component from "@/components/v0";
@@ -18,27 +18,18 @@ export default async function TodosPage() {
     return redirect("/login");
   }
 
-  const [users, setUsers] = useState<User[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const fetchUsers = async () => {
         const { data, error } = await supabase
           .from('users')
           .select()// Type the select method
 
         if (error) throw error
-        setUsers(data || []) // Default to an empty array if data is null
+        
+        return <Component user={data[0]} />
       }
 
-    fetchUsers()
-  }, [])
 
-  if (loading) return <div>Loading...</div>
-  if (error) return <div>Error: {error}</div>
+  
 
-  return <Component user={users[0]} />
   //   const pp={
   //     bio: "hello there",
   //     id: "123",
@@ -48,4 +39,4 @@ export default async function TodosPage() {
   //     user_id: "ue21",
   //     email: "t@gmail.com"
   // }
-}
+
