@@ -17,7 +17,8 @@ export async function emailLogin(formData: FormData) {
         password: formData.get('password') as string,
     }
 
-    const { error } = await supabase.auth.signInWithPassword(data)
+    const { error } = await (await supabase).auth
+    .signInWithPassword(data)
 
     if (error) {
         redirect('/login?message=Could not authenticate user')
@@ -37,7 +38,7 @@ export async function signup(formData: FormData) {
         password: formData.get('password') as string,
     }
 
-    const { error } = await supabase.auth.signUp(data)
+    const { error } = await (await supabase).auth.signUp(data)
 
     if (error) {
         redirect('/login?message=Error signing up')
@@ -49,7 +50,7 @@ export async function signup(formData: FormData) {
 
 export async function signOut() {
     const supabase = createClient();
-    await supabase.auth.signOut();
+    await (await supabase).auth.signOut();
     redirect('/login')
 }
 
@@ -60,13 +61,10 @@ export async function oAuthSignIn(provider: Provider) {
 
     const supabase = createClient();
     const redirectUrl = getURL("/auth/callback")
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { data, error } = await (await supabase).auth.signInWithOAuth({
         provider: 'google',
         options: {
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
+          redirectTo: redirectUrl
         },
       })
       
@@ -74,6 +72,6 @@ export async function oAuthSignIn(provider: Provider) {
     if (error) {
         redirect('/login?message=Could not authenticate user')
     }
-
+    console.log(data.url)
     return redirect(data.url)
 }

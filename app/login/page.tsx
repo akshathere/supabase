@@ -72,7 +72,7 @@ export default async function Login({
           </form>
           <OAuthButtons />
           <div className="text-center text-sm">
-            Don&apos;t have an account?{" "}
+            Dont have an account?{" "}
             <button formAction={signup} form="login-form" className="underline">
               Sign up
             </button>

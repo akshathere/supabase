@@ -2,6 +2,11 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import Header from "@/components/header";
 
+import { Inter as FontSans } from "next/font/google"
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+})
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";

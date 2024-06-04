@@ -1,72 +1,32 @@
-"use server"
+'use server'
 
-import { Todo } from "@/types/custom";
-import { createClient } from "@/utils/supabase/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
-export async function addTodo(formData: FormData) {
-    const supabase = createClient();
-    const text = formData.get("todo") as string | null
+import { createClient } from '@/utils/supabase/server'
+import { Provider } from '@supabase/supabase-js'
+import { getURL } from '@/utils/helpers'
 
-    if (!text) {
-        throw new Error("Text is required")
+export async function addUser(formData : FormData){
+    const supabase=createClient();
+    const text=formData.get('user') as string | null
+    if(!text){
+        throw new Error("text is required")
     }
-
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user) {
-        throw new Error("User is not logged in")
+    const {data:{
+        user
+    }}=await (await supabase).auth.getUser()
+    if(!user){
+        throw new Error("user not logged in")
     }
-
-    const { error } = await supabase.from("todos").insert({
-        task: text,
-        user_id: user.id
-    })
-
+    const { data, error } = await (await supabase).from('users')
+        .insert({
+            bio: text,
+        user_id: user.id,
+        name:"a"
+        });
     if (error) {
         throw new Error("Error adding task")
-    }
-
-    revalidatePath("/todos")
-}
-
-export async function deleteTodo(id: number) {
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user) {
-        throw new Error("User is not logged in")
-    }
-
-    const { error } = await supabase.from("todos").delete().match({
-        user_id: user.id,
-        id: id
-    })
-
-    if (error) {
-        throw new Error("Error deleting task")
-    }
-
-    revalidatePath("/todos")
-}
-
-export async function updateTodo(todo: Todo) {
-
-
-    const supabase = createClient();
-    const { data: { user } } = await supabase.auth.getUser()
-
-    if (!user) {
-        throw new Error("User is not logged in")
-    }
-
-    const { error } = await supabase.from("todos").update(todo).match({
-        user_id: user.id,
-        id: todo.id
-    })
-
-    if (error) {
-        throw new Error("Error updating task")
     }
 
     revalidatePath("/profile")

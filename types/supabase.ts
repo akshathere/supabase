@@ -17,6 +17,7 @@ export type Database = {
           name: string
           role: string | null
           user_id: string
+          email:string
         }
         Insert: {
           bio: string
